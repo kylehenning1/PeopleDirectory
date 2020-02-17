@@ -15,11 +15,9 @@ namespace PeopleDirectory.DAL
         {
             _db = db;
             Clients = new ClientRepository(_db);
-            //Admins = new AdminRepository(_db);
         }
 
         public IClientRepository Clients { get; private set; }
-        //public IAdminRepository Admins { get; private set; }
 
         public void Dispose()
         {

@@ -8,7 +8,6 @@ namespace PeopleDirectory.DAL.Repositaries.IRepositaries
     interface IUnitOfWork : IDisposable
     {
         IClientRepository Clients { get; }
-        //IAdminRepository Admins { get; }
         void Save();
     }
 }
