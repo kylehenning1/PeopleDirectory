@@ -31,9 +31,8 @@ namespace PeopleDirectory.Helpers
 
             body += $"<p>Kind Regards,<br/>The project team</p>";
 
-
             var message = new MailMessage();
-            message.To.Add(new MailAddress("kylehenning1@gmail.com"));
+            message.To.Add(new MailAddress("mark@bluegrassdigital.com"));
             message.Subject = "Bluegrass Assignment";
             message.Body = body;
             message.IsBodyHtml = true;
