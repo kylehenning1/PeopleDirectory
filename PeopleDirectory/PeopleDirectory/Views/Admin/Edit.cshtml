@@ -1,0 +1,150 @@
+﻿@model PeopleDirectory.Models.Client
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Client</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Client</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProfilePic, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProfilePic, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProfilePic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Gender</label>
+            <div class="col-md-10">
+                <select class="form-control" id="GenderDDL">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Country</label>
+            <div class="col-md-10">
+                <select class="form-control" id="Countries">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">City</label>
+            <div class="col-md-10">
+                <select class="form-control" id="Cities">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a href="../../Admin" class="btn btn-primary">Back to List</a>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Location)
+        @Html.HiddenFor(model => model.Gender)
+    </div>
+}
+
+<script>
+
+    var Locations = { "South Africa": ["Cape Town", "Port Elizabeth", "Durban"], "Australia": ["Some Place1", "Some Place 2", "Some Place 3s"], "Russia": ["Vodka State1", "Vodka State2", "Vodka State3"], "America": ["HotDog", "HamBurger", "Chill Fries"] };
+
+    var generateCountriesDropDownList = function () {
+        for (const [key, value] of Object.entries(Locations)) {
+            var o = new Option(key, key);
+            $(o).html(key);
+            $("#Countries").append(o);
+        }
+    };
+
+    var generateCitiesDropDownList = function () {
+        $("#Cities").empty();
+
+        Locations[$("#Countries").val()].forEach(function (city) {
+            var o = new Option(city, city);
+            $(o).html(city);
+            $("#Cities").append(o);
+        });
+    }
+
+    var setInitialLocationsDropDownList = function () {
+        var location = $("#Location").val().split(",");
+        var city = location[0];
+        var country = location[1].substr(1);
+
+        $("#Countries option[value='" + country + "']").attr('selected', 'selected');
+        generateCitiesDropDownList();
+        $("#Cities option[value='"+city+"']").attr('selected', 'selected');
+    }
+
+    $('#Countries').on('change', function () {
+        generateCitiesDropDownList();
+        $("#Location").val($('#Cities').val() + ", " + $('#Countries').val());
+    });
+
+    $('#Cities').on('change', function () {
+        $("#Location").val($('#Cities').val() + ", " + $('#Countries').val());
+    });
+
+    $('#GenderDDL').on('change', function() {
+        $("#Gender").val($('#GenderDDL').val());
+    });
+
+    var initializeGenderDropDownList = function () {
+        $("#Countries option[value='" + $("#Gender").val() + "']").attr('selected', 'selected');
+    }
+
+    $(document).ready(generateCountriesDropDownList());
+    $(document).ready(setInitialLocationsDropDownList());
+    $(document).ready(initializeGenderDropDownList());
+
+</script>

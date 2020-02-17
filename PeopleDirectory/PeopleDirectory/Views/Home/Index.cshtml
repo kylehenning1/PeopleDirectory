@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-6">
+        <br />
+        <div class="ui-widget" style="padding-left:15px;">
+            <div class="input-group mb-3">
+                <input id="customers" class="form-control" placeholder="Customer" aria-label="Customers Name" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">e.g. Joe Soap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<table class="table table-dark" style="display:none;">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tr>
+        <td><a id="profileBtn" class="btn btn-success">Profile</a></td>
+        <td id="nameTd"></td>
+        <td id="surnameTd"></td>
+        <td id="genderTd"></td>
+        <td id="emailTd"></td>
+    </tr>
+</table>
+<script>
+
+    var clientsList = [];
+
+    function getClients() {
+        $.getJSON("../api/ClientsApi",
+            function (data) {
+                clientsList.length = 0;
+                // Loop through the list of clients.
+                $.each(data, function (key, val) {
+                    // Add a table row for the client.
+                    var row = {
+                        id: val.id, value: val.Name + ' ' + val.Surname
+                    };
+                    clientsList.push(row);
+                });
+            });
+    }
+
+    setTimeout(function () {
+        $(function () {
+            $("#customers").autocomplete({
+                source: clientsList,
+                minLength: 0,
+                select: function (event, ui) {
+                    console.log(ui.item ?
+                        "Selected: " + ui.item.value + ", id: " + ui.item.id :
+                        "Nothing selected, input was " + this.value);
+                    if (ui) {
+                        getClient(ui.item.id);
+                    }
+                }
+            });
+        }, 400);
+
+    });
+
+    function getClient(id) {
+        $.ajax({
+            url: "../api/ClientsApi",
+            type: "get",
+            data: {
+                id: id
+            },
+            success: function (response) {
+                //Do Something
+                $(".table").show();
+                $("#profileBtn").attr("href", "../Client/Index/" + response.id);
+
+                $("#nameTd").text(response.Name);
+                $("#surnameTd").text(response.Surname);
+                $("#genderTd").text(response.Gender);
+                $("#emailTd").text(response.Email);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+
+    $(document).ready(getClients());
+
+</script>

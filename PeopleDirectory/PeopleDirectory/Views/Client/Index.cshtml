@@ -1,0 +1,60 @@
+﻿@model PeopleDirectory.Models.Client
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User Profile</h2>
+
+<table class="table table-dark">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePic)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            <img src="@Model.ProfilePic" height="100" width="100" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Surname)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => Model.MobileNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Email)
+        </td>
+    </tr>
+
+
+</table>
